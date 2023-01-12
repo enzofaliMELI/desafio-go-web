@@ -21,14 +21,22 @@ func NewService(r Repository) Service {
 
 // Todo
 func (s *service) GetTotalTickets(ctx context.Context, destination string) ([]domain.Ticket, error) {
-	s.r.GetAll(ctx)
-	// filtrar por pais
-	lista := []
-	return lista, nil
+	tickets, _ := s.r.GetAll(ctx)
+
+	var ticketFilter []domain.Ticket
+	for _, ticket := range tickets {
+		if ticket.Country == destination {
+			ticketFilter = append(ticketFilter, ticket)
+		}
+	}
+
+	return ticketFilter, nil
 }
 
 func (s *service) AverageDestination(ctx context.Context, destination string) (int, error) {
-	lista, _ := GetTotalTickets(ctx, destination)
-	avg := 0
+	tickets, _ := s.GetTotalTickets(ctx, destination)
+	totalTickets, _ := s.r.GetAll(ctx)
+	avg := len(tickets) / len(totalTickets)
+
 	return avg, nil
 }
