@@ -23,10 +23,7 @@ func (r *Router) MapRoutes() {
 	service := tickets.NewService(repository)
 	handler := handler.NewTicket(service)
 
-	products := r.en.Group("/products")
-	products.GET("/ticket/getByCountry/:dest", handler.GetTicketsByCountry())
-	products.GET("/ticket/getAverage/:dest", handler.AverageDestination())
-
-	//products.PATCH("/:id", middleware.TokenAuthMiddleware(), handler.UpdatePATCH())
-	//products.DELETE("/:id", middleware.Middlewares(handler.DeleteProduct())...)
+	tickets := r.en.Group("/tickets")
+	tickets.GET("/getByCountry/:dest", handler.GetTicketsByCountry())
+	tickets.GET("/getAverage/:dest", handler.AverageDestination())
 }
