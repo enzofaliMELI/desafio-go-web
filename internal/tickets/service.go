@@ -19,7 +19,6 @@ func NewService(r Repository) Service {
 	return &service{r: r}
 }
 
-// Todo
 func (s *service) GetTotalTickets(ctx context.Context, destination string) ([]domain.Ticket, error) {
 	tickets, _ := s.r.GetAll(ctx)
 
@@ -34,9 +33,10 @@ func (s *service) GetTotalTickets(ctx context.Context, destination string) ([]do
 }
 
 func (s *service) AverageDestination(ctx context.Context, destination string) (int, error) {
-	tickets, _ := s.GetTotalTickets(ctx, destination)
+	tickets, _ := s.r.GetTicketByDestination(ctx, destination)
 	totalTickets, _ := s.r.GetAll(ctx)
-	avg := len(tickets) / len(totalTickets)
 
-	return avg, nil
+	avg := float64(len(tickets)) / float64(len(totalTickets)) * 100
+
+	return int(avg), nil
 }
